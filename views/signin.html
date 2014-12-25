@@ -1,0 +1,50 @@
+<style type="text/css">.card {
+      background-color: white;
+      padding: 20px 16px;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      position: relative;
+    }
+
+	.wide.card {
+	  margin:auto;
+      margin-top: 13%;
+      max-height: 580px;
+      max-width: 512px;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+      border-radius: 2px;
+  	}
+
+	.header {
+      font-size: 1.5em;
+      color: #00BCD4;
+      font-weight: lighter;
+      margin-bottom: 15px;
+    }
+    .indent {
+      padding: 0 2px;
+      margin-bottom: 20px;
+    }
+
+    .bg{
+    	background-color: #eee;
+    	position: inherit;
+    	height: 100%;
+    	width: 100%;
+
+    }
+
+     #check {
+      width: 56px;
+      height: 56px;
+      background-color: #f5f5f5;
+      fill: black;
+      position: absolute;
+      right: 15px;
+      bottom: 15px;
+    }
+
+    paper-input {
+      max-width: 20em;
+      width: auto;
+    }</style> <div layout vertical fit style="background:#e91e63;z-index:9;color:white" ng-if="databaseSync" center center-justified> <div class="loader"> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> <div class="circle"></div> </div> <div style="padding-top:30px;width:80%;font-size:18px;text-align:center"><p>Please wait till database updates are synced to your device</p></div> </div> <div class="bg" fit dummy cross-fade> <div class="card wide" layout vertical flex ng-enter="myFunc()"> <div class="indent" layout vertical> <div class="header">Sign In</div> <paper-input label="Username" ng-model="user.username"></paper-input> <paper-input label="Password" type="password" ng-model="user.password"></paper-input> {{errors}} </div> <paper-fab id="check" icon="check" ng-show="user.username != '' && user.password != ''" ng-click="login(user)"></paper-fab> </div> </div> <!-- {{username}} -->

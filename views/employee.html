@@ -1,0 +1,56 @@
+<style shim-shadowdom>core-header-panel {
+      width: 100%;
+      height: {{windowHeight}} + px;
+    }
+   
+
+    .core-header {
+      height: 60px;
+      line-height: 60px;
+      font-size: 18px;
+      padding: 0 10px;
+      background-color: #4F7DC9;
+      color: #FFF;
+      transition: height 0.2s;
+    }
+    
+    .core-header.tall {
+      height: 180px;
+    }
+    
+    .core-header.medium-tall {
+      height: 120px;
+    }
+
+    .content {
+      height: 2000px;
+      background: linear-gradient(rgb(214, 227, 231), lightblue);
+    }</style> <div horizontal layout id="navMenu" ng-class="{'narrow': narrow }"> <paper-icon-button icon="view-quilt" ng-click="goemp()"></paper-icon-button> <paper-menu-button icon="account-circle" halign="right" ng-opened="opened1"> <paper-item label="Tutorials" ng-click="tuts()"></paper-item> <paper-item label="Change Password" ng-click="changePassword()"></paper-item> <paper-item label="Logout" ng-click="logout()"></paper-item> </paper-menu-button> </div> <div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent" ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-autostart="false"> <core-drawer-panel id="drawerPanel" rightdrawer ng-narrow="narrow" responsivewidth="{{responsiveWidth}}"> <div layout horizontal main> <paper-dialog transition="paper-dialog-transition-center"> <img ng-src="data:image/jpeg;base64,{{thumbnail}}" alt=""> <paper-button label="Close" affirmative autofocus></paper-button> </paper-dialog> <paper-dialog transition="paper-dialog-transition-bottom"> <div fit horizontal vertical layout><iframe src="{{regionWeather | trusted}}" style="width:100%;height:100%"></iframe><paper-button label="Close" affirmative autofocus></paper-button></div> </paper-dialog> <div style="width:50%"> <core-header-panel mode="cover"> <core-icon-button onclick="document.querySelector('core-drawer-panel').togglePanel()" icon="menu"></core-icon-button> <div class="core-header medium-tall"> </div> <div id="card1" class="move-up"> <div horizotal layout bindonce> <div flex class="employee_title"> <span bo-text="employeeName | employeName"></span></div> <div style="display:inline-block"> <core-selector ng-model="selected"> <paper-icon-button fill istoggle icon="explore" id="option1"></paper-icon-button> <paper-icon-button fill istoggle icon="archive" id="option2"></paper-icon-button> </core-selector> </div> </div> <google-map ng-if="selected==0&&currentLocation.center" center="map.center" zoom="map.zoom" draggable> <marker ng-if="selected==0&&currentLocation.center" coords="currentLocation.center" idkey="currentLocation.email"> </marker> </google-map> <google-map ng-if="selected==1&&trackedData!=null" draggable center="map.center" zoom="8" control="map.control"> <marker style="width:12px" ng-if="selectedMode==0&&trackedMarkers" ng-repeat="m in trackedMarkers" coords="m" idkey="m.id" icon="m.icon" click="markerDetail(m,$index)"> <window show="show"> <div>Time: {{m.time}} </div> </window> </marker> <marker style="width:12px" ng-if="selectedMode==0&&trackedfarmerMarkers" ng-repeat="m in trackedfarmerMarkers" coords="m" idkey="m.id" icon="m.icon" click="markerDetail(m,$index)"> <window show="show"> <div>Time: {{m.time}} </div> </window> </marker> </google-map> <div ng-show="currentLocation.error&&selected==0" style="height:340px;color:#777" layout vertical center-justified center> <p style="">No Current Location Data is available Available</p> </div> <div ng-show="selected==1&&trackedData==null" style="height:340px;color:#777" layout vertical center-justified center> <div ng-hide="loading" style=""><p>Please Select Date Below</p></div> <div ng-show="loading"> <div class="loader" style="width:100%"> <img style="margin:auto" ng-src="images/loading.png" alt="loading" class="loading"> </div> <p>{{dataWait}}</p></div> </div> <div horizontal layout class="divider"> <div flex class="info"> Tracking - <span ng-if="selected==0">Current Location</span> <span ng-if="selected==1">Tracked Data</span> </div> <div ng-if="selected==0" class="info" style="width:20%;font-size:10px">{{currentAddress}}</div> <div flex ng-if="selected==1" class="info"><quick-datepicker ng-change="onModelChange(myDate)" ng-model="myDate" label-format="MMM dd yyyy" style="position:absolute;z-index=3"></quick-datepicker> </div> <div ng-if="selectedMode==1&&selectedDate!=null&&selected==1"> Select Time : <select ng-model="myValue" ng-options="a.value for a in values" ng-change="changeValue(myValue)"> <option value="myValue.id">-- choose Value -- </select> </div> <div ng-if="selected==1&&selectedDate!=null"><paper-icon-button icon="check" ng-click="fetchData()" ng-hide="loading"></paper-icon-button></div> <div ng-hide="selected===0"> <core-selector ng-model="selectedMode" selected> <paper-icon-button fill icon="flag"></paper-icon-button> <paper-icon-button fill icon="gesture"></paper-icon-button> </core-selector> </div> </div> <div ng-if="selected==1&&selectedDate!=null"> <div horizontal layout class="divider"> <div flex class="info">New Farmers Added - {{employeeDetail.FarmerCount}} </div> <div flex class="info">Revisited Farmers- {{employeeDetail.TotalVisits}}</div> </div> <div horizontal layout> <div flex class="info">New Additions - {{newAdd.length}} </div> <div flex class="info">Revisits - {{revisits.length}}</div> </div> <div horizontal layout class="divider"> <div flex class="info"><core-item bindonce ng-repeat="item in newAdd" bo-text="item.name"></core-item> </div> <div flex class="info"><core-item bindonce ng-repeat="item in revisits" bo-text="item.name"></core-item></div> </div> </div> <div ng-if="selected==0"> <div horizontal layout class="divider"> <div flex class="info">Total Farmers Added - {{employeeDetail.FarmerCount}} </div> <div flex class="info">Total Advices Given- {{employeeDetail.TotalVisits}}</div> </div> <div horizontal layout class="divider"> <div flex class="info">Today's Farmer Added - {{employeeDetail.TodaysActivity.FarmerCount}} </div> <div flex class="info">Today's Advices - {{employeeDetail.TodaysActivity.TodaysVisit}}</div> </div> </div> <div horizontal layout ng-if="selected == 0"> <div ng-if="employeeDetail.TodaysActivity.FarmerCount != 0" flex horizontal layout class="info"> <span self-start style="width:30%;display:inline-block">Farmers List</span> <ul style="width:64%;display:inline-block"> <li ng-repeat="farmer in employeeDetail.TodaysActivity.FarmerList" bindonce> <core-item><img bo-src-i="data:image/jpeg;base64,{{farmer.picture}}" style="width:50px;border-radius:50%;height:50px;margin-right:10px" ng-click="toggleDialog(farmer.picture)"><div vertical layout><span bo-text="farmer.name"></span> <span style="font-size:10px" bo-text="farmer.village"></span></div> </core-item> </li> </ul> </div> <!-- <div ng-if="employeeDetail.TodaysActivity.TodaysVisit != 0" flex horizontal layout class="info">
+                    <span  self-start style="width:30%;display:inline-block;">Products Advisied</span>
+                    <ul style="width:64%;display:inline-block;">
+                      <li ng-repeat="products in employeeDetail.TodaysActivity.FarmerList">{{products}}</li>
+                    </ul>
+                  </div> --> </div> <div ng-if="selected==0" class="info" horizontal layout around-justified> <paper-item ng-click="toggleDialog1()" bindonce="region">Weather in Region &nbsp;<strong bo-text="region"></strong></paper-item> </div> </div> </core-header-panel> </div> <!-- Panel two --> <div style="width:50%"> <core-header-panel mode="cover"> <div class="core-header medium-tall"> </div> <div id="card2" class="move-up"> <paper-tabs class="transparent-teal" ng-model="tabValue"> <paper-tab>All Visits</paper-tab> <paper-tab>Advices</paper-tab> </paper-tabs> <div ui-view> </div> </div> <!--card2 --> </core-header-panel> </div> </div> <div drawer> <core-header-panel> <core-toolbar class="standard"> IMT </core-toolbar> <paper-item bindonce ng-click="goto(item.id)" ng-repeat="item in employeeList" bo-text="item.name"></paper-item> <!--  <core-menu id="menu" on-core-select="{{menuSelect}}">
+              <content></content>
+            </core-menu> --> <!-- <div ng-repeat="group in groups" track-by="group.label" horizontal layout>
+              <div class="title">{{ group.label }}</div>
+              <div flex>
+                <ul class="list single-fill">
+                  <li class="list-item" ng:repeat="contact in group.contacts | filter:SearchName:strict" track-by="contact.id">
+                    <a href="#/farmer/{{contact.id}}">
+                    <paper-item class="label-outline" ng-click="cardTransitionDone(contact)">
+                      
+                      <div flex> 
+                        <div style="font-size: 14px;font-weight:700;">{{contact.name}}</div>
+                        <div style="font-size: 10px;color:#999;width:70%;margin-top:5px;font-weight:300;">{{contact.village}}</div>
+                      </div>
+                      <core-tooltip label="Last Visit Details">
+                          <div style="text-align:right"><div style="font-size: 14px;font-weight:700;">{{contact.lastVisit}}</div>
+                          <div style="font-size: 10px;color:#999;margin-top:5px;font-weight:300;">{{contact.owner | employeName}}</div></div>
+                    </core-tooltip>
+                    </paper-item>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div> --> </core-header-panel> </div> </core-drawer-panel> </div>

@@ -1,0 +1,50 @@
+<style type="text/css">.card {
+      background-color: white;
+      padding: 20px 16px;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      position: relative;
+    }
+
+	.wide.card {
+	  margin:auto;
+      margin-top: 13%;
+      max-height: 580px;
+      max-width: 512px;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+      border-radius: 2px;
+  	}
+
+	.header {
+      font-size: 1.5em;
+      color: #00BCD4;
+      font-weight: lighter;
+      margin-bottom: 15px;
+    }
+    .indent {
+      padding: 0 2px;
+      margin-bottom: 20px;
+    }
+
+    .bg{
+    	background-color: #eee;
+    	position: inherit;
+    	height: 100%;
+    	width: 100%;
+
+    }
+
+     #check {
+      width: 56px;
+      height: 56px;
+      background-color: #f5f5f5;
+      fill: black;
+      position: absolute;
+      right: 15px;
+      bottom: 15px;
+    }
+
+    paper-input {
+      max-width: 20em;
+      width: auto;
+    }</style> <div class="bg" fit dummy cross-fade> <div class="card wide" layout vertical flex ng-enter="myFunc()"> <div class="indent" layout vertical> <div class="header">Set Password</div> <form name="form"> <paper-input label="Username" name="username" ng-model="user.username" required></paper-input> <paper-input ng-if="showOldpassword" label="Old Password" name="password" type="password" ng-model="user.oldPassword"></paper-input> <paper-input label="Password" name="password" type="password" ng-model="user.password"></paper-input> <paper-input label="Confirm Password" name="confirm_password" type="password" ng-model="user.passwordConfirm" required></paper-input> <div ng-if="user.username != '' && user.password != '' && user.passwordconfirm != ''" ng-hide="passwordMatch">Fields are not equal!</div> </form> {{errors}} </div> <paper-fab id="check" icon="check" ng-show="user.username != '' && user.password != '' && user.passwordConfirm != '' && passwordMatch" ng-click="login(user)"></paper-fab> </div> </div> <!-- {{username}} -->
